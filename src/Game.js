@@ -21,7 +21,7 @@ class Game extends React.Component {
     makeEmptyBoard() {
         let board = [];
         for (let x = 0; x < this.rows; x++) {
-            board[x] = 0;
+            board[x] = [];
             for (let y = 0; y < this.columns; y++) {
                 board[x][y] = false;
             }
@@ -49,6 +49,21 @@ class Game extends React.Component {
             x: (rect.top + window.pageYOffset) - doc.clientTop,
             y: (rect.left + window.pageXOffset) - doc.clientLeft, 
         }
+    }
+
+    handleClick = (event) => {
+        const elemOffset = this.getElementOffset();
+        const offsetX = event.clientX - elemOffset.x;
+        const offsetY = event.clientY - elemOffset.y;
+
+        const x = Math.floor(offsetX / CELL_SIZE);
+        const y = Math.floor(offsetY / CELL_SIZE);
+
+        if (x >= 0 && x <= this.columns && y >= 0 && y <= this.rows) {
+            this.board[y][x] = !this.board[y][x];
+        }
+
+        this.setState({ cells: this.makeCells() });
     }
 
     render() {
