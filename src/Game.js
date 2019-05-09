@@ -1,5 +1,5 @@
 import React from 'react';
-import './Games.css';
+import './Game.css';
 
 
 const CELL_SIZE = 20;
@@ -41,10 +41,23 @@ class Game extends React.Component {
         return cells;
     }
 
+    getElementOffset() {
+        const rect = this.boardRef.getBoundingClientRect();
+        const doc = document.documentElement;
+
+        return {
+            x: (rect.top + window.pageYOffset) - doc.clientTop,
+            y: (rect.left + window.pageXOffset) - doc.clientLeft, 
+        }
+    }
+
     render() {
         return (
             <div>
-                <div className='Board'
+                <div 
+                className='Board'
+                onClick={this.handleClick}
+                ref={(n) => { this.boardRef = n; }}
                 style={{
                     width: WIDTH, height: HEIGHT,
                     backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`
